@@ -1,0 +1,9 @@
+{
+  "name": "ElasticExportBasicPriceSearchEngine",
+  "description": "This plugin adds the format BasicPriceSearchEngine to the Elastic Export.",
+  "namespace": "ElasticExportBasicPriceSearchEngine",
+  "author": "plentymarkets",
+  "type": "export",
+  "serviceProvider": "ElasticExportBasicPriceSearchEngine\\ElasticExportBasicPriceSearchEngineServiceProvider",
+  "version": 0.1
+}
