@@ -31,12 +31,10 @@ class BasicPriceSearchEngine extends CSVGenerator
 
     /**
      * BasicPriceSearchEngine constructor.
-     * @param ElasticExportCoreHelper $elasticExportHelper
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ElasticExportCoreHelper $elasticExportHelper, ArrayHelper $arrayHelper)
+    public function __construct(ArrayHelper $arrayHelper)
     {
-        $this->elasticExportHelper = $elasticExportHelper;
         $this->arrayHelper = $arrayHelper;
     }
 
@@ -46,6 +44,7 @@ class BasicPriceSearchEngine extends CSVGenerator
      */
     protected function generateContent($resultData, array $formatSettings = [])
     {
+        $this->elasticExportHelper = pluginApp(ElasticExportCoreHelper::class);
         if(is_array($resultData) && count($resultData['documents']) > 0)
         {
             $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
