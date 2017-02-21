@@ -7,7 +7,7 @@ use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\Item\DataLayer\Models\Record;
 use Plenty\Modules\Item\DataLayer\Models\RecordList;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
-use ElasticExportCore\Helper\ElasticExportCoreHelper;
+use ElasticExport\Helper\ElasticExportCoreHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
 
 class BasicPriceSearchEngine extends CSVGenerator
@@ -45,7 +45,7 @@ class BasicPriceSearchEngine extends CSVGenerator
     protected function generateContent($resultData, array $formatSettings = [])
     {
         $this->elasticExportHelper = pluginApp(ElasticExportCoreHelper::class);
-        if(is_array($resultData) && count($resultData['documents']) > 0)
+        if(is_array($resultData['documents']) && count($resultData['documents']) > 0)
         {
             $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
 
