@@ -2,11 +2,11 @@
 
 namespace ElasticExportBasicPriceSearchEngine\Filter;
 
-use Plenty\Modules\DataExchange\Contracts\FiltersForElasticSearchContract;
+use Plenty\Modules\DataExchange\Contracts\FiltersForElasticSearch;
 
 use Plenty\Plugin\Application;
 
-class BasicPriceSearchEngine extends FiltersForElasticSearchContract
+class BasicPriceSearchEngine extends FiltersForElasticSearch
 {
     /**
      * @var Application $app
