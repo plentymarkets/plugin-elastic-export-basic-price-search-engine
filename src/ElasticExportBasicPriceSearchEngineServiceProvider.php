@@ -18,6 +18,7 @@ class ElasticExportBasicPriceSearchEngineServiceProvider extends DataExchangeSer
             'BasicPriceSearchEngine-Plugin',
             'ElasticExportBasicPriceSearchEngine\ResultField\BasicPriceSearchEngine',
             'ElasticExportBasicPriceSearchEngine\Generator\BasicPriceSearchEngine',
+            '',
             true
         );
     }

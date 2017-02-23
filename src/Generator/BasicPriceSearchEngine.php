@@ -2,7 +2,7 @@
 
 namespace ElasticExportBasicPriceSearchEngine\Generator;
 
-use Plenty\Modules\DataExchange\Contracts\CSVGenerator;
+use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\Item\DataLayer\Models\Record;
 use Plenty\Modules\Item\DataLayer\Models\RecordList;
@@ -10,7 +10,7 @@ use Plenty\Modules\DataExchange\Models\FormatSetting;
 use ElasticExport\Helper\ElasticExportCoreHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
 
-class BasicPriceSearchEngine extends CSVGenerator
+class BasicPriceSearchEngine extends CSVPluginGenerator
 {
     const DELIMITER = '	';
     
@@ -43,7 +43,7 @@ class BasicPriceSearchEngine extends CSVGenerator
      * @param array $formatSettings
      * @param array $filter
      */
-    protected function generateContent($resultData, array $formatSettings = [], array $filter = [])
+    protected function generatePluginContent($resultData, array $formatSettings = [], array $filter = [])
     {
         $this->elasticExportHelper = pluginApp(ElasticExportCoreHelper::class);
         if(is_array($resultData['documents']) && count($resultData['documents']) > 0)
