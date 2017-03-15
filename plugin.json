@@ -2,12 +2,23 @@
   "name": "ElasticExportBasicPriceSearchEngine",
   "description": "This plugin adds the format BasicPriceSearchEngine to the Elastic Export.",
   "namespace": "ElasticExportBasicPriceSearchEngine",
-  "author": "plentymarkets",
+  "author": "plentymarkets GmbH",
   "type": "export",
+  "authorIcon": "icon_author_xs.png",
   "serviceProvider": "ElasticExportBasicPriceSearchEngine\\ElasticExportBasicPriceSearchEngineServiceProvider",
-  "version": 0.1,
-  "require":
-  {
-    "ElasticExport": 0.1
+  "license": "GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007",
+  "pluginIcon": "icon_plugin_md.png",
+  "price": 0.00,
+  "shortDescription": {
+    "de": "Das Plugin Basic Price Search Engine fügt das Datenformat BasicPriceSearchEngine zum Elastischen Export hinzu.",
+    "en": "This plugin adds the format BasicPriceSearchEngine to the Elastic Export."
+  },
+  "categories": [
+    "3523"
+  ],
+  "version": "1.0.0",
+  "marketplaceName": {
+    "de": "Basic Price Search Engine",
+    "en": "Basic Price Search Engine"
   }
 }

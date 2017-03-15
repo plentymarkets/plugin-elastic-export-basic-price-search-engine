@@ -110,11 +110,15 @@ class BasicPriceSearchEngine extends ResultFields
             ],
 
             [
-                $imageMutator,
                 $languageMutator,
                 $defaultCategoryMutator,
             ],
         ];
+
+        if($reference != -1)
+        {
+            $fields[1][] = $imageMutator;
+        }
 
         return $fields;
     }
