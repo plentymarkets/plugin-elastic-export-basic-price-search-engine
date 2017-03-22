@@ -86,18 +86,19 @@ class BasicPriceSearchEngine extends ResultFields
                 'unit.id',
 
                 //images
-                'images.item.id',
-                'images.item.type',
-                'images.item.fileType',
+                'images.item.urlMiddle',
+                'images.item.urlPreview',
+                'images.item.urlSecondPreview',
+                'images.item.url',
                 'images.item.path',
                 'images.item.position',
-                'images.item.cleanImageName',
-                'images.variation.id',
-                'images.variation.type',
-                'images.variation.fileType',
+
+                'images.variation.urlMiddle',
+                'images.variation.urlPreview',
+                'images.variation.urlSecondPreview',
+                'images.variation.url',
                 'images.variation.path',
                 'images.variation.position',
-                'images.variation.cleanImageName',
 
                 //defaultCategories
                 'defaultCategories.id',
