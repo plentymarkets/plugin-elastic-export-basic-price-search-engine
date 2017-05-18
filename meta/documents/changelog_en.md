@@ -8,6 +8,7 @@
 - The performance has been improved.
 - Outsourced the stock filter logic to the Elastic Export plugin.
 - The language works now correctly for the export format.
+- The barcode filter was amended and works correctly now for a specific market referrer.
 
 ## v1.0.1 (2017-03-22)
 

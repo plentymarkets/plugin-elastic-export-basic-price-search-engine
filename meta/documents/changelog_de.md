@@ -8,6 +8,7 @@
 - Die Performance wurde verbessert.
 - Die Bestandsfilterlogik wurde in das Elastic Export-Plugin ausgelagert.
 - Die Sprache funktioniert nun korrekt für das Exportformat.
+- Der Barcode-Filter wurde geändert und funktioniert jetzt korrekt für einen bestimmten Marktreferenten.
 
 ## v1.0.1 (2017-03-22)
 
