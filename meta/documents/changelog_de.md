@@ -1,5 +1,14 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
+## v1.0.2 (2017-05-18)
+
+### Behoben
+- Die try-catch-Anweisung zum Abfangen von Fehlern funktioniert nun wie vorgesehen.
+- Das Formatplugin basiert nun nur noch auf Elastic Search.
+- Die Performance wurde verbessert.
+- Die Bestandsfilterlogik wurde in das Elastic Export-Plugin ausgelagert.
+- Die Sprache funktioniert nun korrekt für das Exportformat.
+
 ## v1.0.1 (2017-03-22)
 
 ### Behoben

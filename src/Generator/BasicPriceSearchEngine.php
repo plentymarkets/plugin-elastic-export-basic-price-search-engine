@@ -2,16 +2,24 @@
 
 namespace ElasticExportBasicPriceSearchEngine\Generator;
 
+use ElasticExport\Helper\ElasticExportStockHelper;
+use ElasticExportBasicPriceSearchEngine\Helper\PriceHelper;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
-use Plenty\Modules\Item\DataLayer\Models\Record;
-use Plenty\Modules\Item\DataLayer\Models\RecordList;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
 use ElasticExport\Helper\ElasticExportCoreHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
+use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
+use Plenty\Plugin\Log\Loggable;
 
+/**
+ * Class BasicPriceSearchEngine
+ * @package ElasticExportBasicPriceSearchEngine\Generator
+ */
 class BasicPriceSearchEngine extends CSVPluginGenerator
 {
+    use Loggable;
+
     const DELIMITER = '	';
     
     /**
@@ -19,158 +27,280 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     private $elasticExportHelper;
 
-    /*
+    /**
+     * @var ElasticExportStockHelper $elasticExportStockHelper
+     */
+    private $elasticExportStockHelper;
+
+    /**
      * @var ArrayHelper
      */
     private $arrayHelper;
 
     /**
-     * @var array $idlVariations
+     * @var PriceHelper
      */
-    private $idlVariations = array();
+    private $priceHelper;
+
+    /**
+     * @var array
+     */
+    private $shipmentCache;
+
+    /**
+     * @var array
+     */
+    private $manufacturerCache;
 
     /**
      * BasicPriceSearchEngine constructor.
+     *
      * @param ArrayHelper $arrayHelper
      */
-    public function __construct(ArrayHelper $arrayHelper)
+    public function __construct(
+        ArrayHelper $arrayHelper,
+        PriceHelper $priceHelper)
     {
         $this->arrayHelper = $arrayHelper;
+        $this->priceHelper = $priceHelper;
     }
 
     /**
-     * @param array $resultData
+     * Generates and populates the data into the CSV file.
+     *
+     * @param VariationElasticSearchScrollRepositoryContract $elasticSearch
      * @param array $formatSettings
      * @param array $filter
      */
-    protected function generatePluginContent($resultData, array $formatSettings = [], array $filter = [])
+    protected function generatePluginContent($elasticSearch, array $formatSettings = [], array $filter = [])
     {
+        $this->elasticExportStockHelper = pluginApp(ElasticExportStockHelper::class);
         $this->elasticExportHelper = pluginApp(ElasticExportCoreHelper::class);
-        if(is_array($resultData['documents']) && count($resultData['documents']) > 0)
+
+        $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
+
+        $this->setDelimiter(self::DELIMITER);
+
+        $this->addCSVContent($this->head());
+
+        $startTime = microtime(true);
+
+        if($elasticSearch instanceof VariationElasticSearchScrollRepositoryContract)
         {
-            $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
+            // Initiate the counter for the variations limit
+            $limit = 0;
+            $limitReached = false;
 
-            $this->setDelimiter(self::DELIMITER);
+            do
+            {
+                $this->getLogger(__METHOD__)->debug('ElasticExportBasicPriceSearchEngine::logs.writtenLines', [
+                    'Lines written' => $limit,
+                ]);
 
-            $this->addCSVContent([
-                'article_id',
-                'deeplink',
-                'name',
-                'short_description',
-                'description',
-                'article_no',
-                'producer',
-                'model',
-                'availability',
-                'ean',
-                'isbn',
-                'fedas',
-                'unit',
-                'price',
-                'price_old',
-                'weight',
-                'category1',
-                'category2',
-                'category3',
-                'category4',
-                'category5',
-                'category6',
-                'category_concat',
-                'image_url_preview',
-                'image_url',
-                'shipment_and_handling',
-                'unit_price',
-                'unit_price_value',
-                'unit_price_lot',
+                if($limitReached === true)
+                {
+                    break;
+                }
+
+                $esStartTime = microtime(true);
+
+                // Get the data from Elastic Search
+                $resultList = $elasticSearch->execute();
+
+                $this->getLogger(__METHOD__)->debug('ElasticExportBasicPriceSearchEngine::logs.esDuration', [
+                    'Elastic Search duration' => microtime(true) - $esStartTime,
+                ]);
+
+                if(count($resultList['error']) > 0)
+                {
+                    $this->getLogger(__METHOD__)->error('ElasticExportBasicPriceSearchEngine::logs.occurredElasticSearchErrors', [
+                        'Error message' => $resultList['error'],
+                    ]);
+
+                    break;
+                }
+
+                $buildRowStartTime = microtime(true);
+
+                if(is_array($resultList['documents']) && count($resultList['documents']) > 0)
+                {
+                    $previousId = null;
+
+                    foreach($resultList['documents'] as $variation)
+                    {
+                        // Stop and set the flag if limit is reached
+                        if($limit == $filter['limit'])
+                        {
+                            $limitReached = true;
+                            break;
+                        }
+
+                        // If filtered by stock is set and stock is negative, then skip the variation
+                        if ($this->elasticExportStockHelper->isFilteredByStock($variation, $filter) === true)
+                        {
+                            $this->getLogger(__METHOD__)->info('ElasticExportBasicPriceSearchEngine::logs.variationNotPartOfExportStock', [
+                                'VariationId' => $variation['id']
+                            ]);
+
+                            continue;
+                        }
+
+                        try
+                        {
+                            // Set the caches if we have the first variation or when we have the first variation of an item
+                            if($previousId === null || $previousId != $variation['data']['item']['id'])
+                            {
+                                $previousId = $variation['data']['item']['id'];
+                                unset($this->shipmentCache, $this->manufacturerCache);
+
+                                // Build the caches arrays
+                                $this->buildCaches($variation, $settings);
+                            }
+
+                            // Build the new row for printing in the CSV file
+                            $this->buildRow($variation, $settings);
+                        }
+                        catch(\Throwable $throwable)
+                        {
+                            $this->getLogger(__METHOD__)->error('ElasticExportBasicPriceSearchEngine::logs.fillRowError', [
+                                'Error message ' => $throwable->getMessage(),
+                                'Error line'     => $throwable->getLine(),
+                                'VariationId'    => $variation['id']
+                            ]);
+                        }
+
+                        // New line was added
+                        $limit++;
+                    }
+
+                    $this->getLogger(__METHOD__)->debug('ElasticExportBasicPriceSearchEngine::logs.buildRowDuration', [
+                        'Build rows duration' => microtime(true) - $buildRowStartTime,
+                    ]);
+                }
+
+            } while ($elasticSearch->hasNext());
+        }
+
+        $this->getLogger(__METHOD__)->debug('ElasticExportBasicPriceSearchEngine::logs.fileGenerationDuration', [
+            'Whole file generation duration' => microtime(true) - $startTime,
+        ]);
+    }
+
+    /**
+     * Creates the header of the CSV file.
+     *
+     * @return array
+     */
+    private function head():array
+    {
+        return array(
+            'article_id',
+            'deeplink',
+            'name',
+            'short_description',
+            'description',
+            'article_no',
+            'producer',
+            'model',
+            'availability',
+            'ean',
+            'isbn',
+            'fedas',
+            'unit',
+            'price',
+            'price_old',
+            'weight',
+            'category1',
+            'category2',
+            'category3',
+            'category4',
+            'category5',
+            'category6',
+            'category_concat',
+            'image_url_preview',
+            'image_url',
+            'shipment_and_handling',
+            'unit_price',
+            'unit_price_value',
+            'unit_price_lot',
+            'variation_id'
+        );
+    }
+
+    /**
+     * Creates the variation row and prints it into the CSV file.
+     *
+     * @param $variation
+     * @param KeyValue $settings
+     */
+    private function buildRow($variation, KeyValue $settings)
+    {
+        // get the price list
+        $priceList = $this->priceHelper->getPriceList($variation, $settings);
+
+        // only variations with the Retail Price greater than zero will be handled
+        if(!is_null($priceList['variationRetailPrice.price']) && $priceList['variationRetailPrice.price'] > 0)
+        {
+            $shipmentAndHandling = $this->getShipment($variation);
+
+            $manufacturer = $this->getManufacturer($variation);
+
+            $basePriceList = $this->elasticExportHelper->getBasePriceList($variation, $priceList['variationRetailPrice.price'], $settings->get('lang'));
+
+            $data = [
+                'article_id'            => $variation['data']['item']['id'],
+                'deeplink'              => $this->elasticExportHelper->getMutatedUrl($variation, $settings, true, false),
+                'name'                  => $this->elasticExportHelper->getMutatedName($variation, $settings),
+                'short_description'     => $this->elasticExportHelper->getMutatedPreviewText($variation, $settings),
+                'description'           => $this->elasticExportHelper->getMutatedDescription($variation, $settings, 256),
+                'article_no'            => $variation['data']['variation']['number'],
+                'producer'              => $manufacturer,
+                'model'                 => $variation['data']['variation']['model'],
+                'availability'          => $this->elasticExportHelper->getAvailability($variation, $settings),
+                'ean'                   => $this->elasticExportHelper->getBarcodeByType($variation, ElasticExportCoreHelper::BARCODE_EAN),
+                'isbn'                  => $this->elasticExportHelper->getBarcodeByType($variation, ElasticExportCoreHelper::BARCODE_ISBN),
+                'fedas'                 => $variation['data']['item']['amazonFedas'],
+                'unit'                  => $basePriceList['unit'],
+                'price'                 => number_format((float)$priceList['variationRetailPrice.price'], 2, '.', ''),
+                'price_old'             => number_format((float)$priceList['variationRecommendedRetailPrice.price'], 2, '.', ''),
+                'weight'                => $variation['data']['variation']['weightG'],
+                'category1'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 1),
+                'category2'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 2),
+                'category3'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 3),
+                'category4'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 4),
+                'category5'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 5),
+                'category6'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 6),
+                'category_concat'       => $this->elasticExportHelper->getCategory((int)$variation['data']['defaultCategories'][0]['id'], $settings->get('lang'), $settings->get('plentyId')),
+                'image_url_preview'     => $this->getImages($variation, $settings, ';', 'preview'),
+                'image_url'             => $this->elasticExportHelper->getMainImage($variation, $settings),
+                'shipment_and_handling' => $shipmentAndHandling,
+                'unit_price'            => $this->elasticExportHelper->getBasePrice($variation, $priceList, $settings->get('lang')),
+                'unit_price_value'      => $basePriceList['price'],
+                'unit_price_lot'        => $basePriceList['lot'],
+                'variation_id'          => $variation['id']
+            ];
+
+            $this->addCSVContent(array_values($data));
+        }
+        else
+        {
+            $this->getLogger(__METHOD__)->info('ElasticExportBasicPriceSearchEngine::logs.variationNotPartOfExportPrice', [
+                'VariationId' => $variation['id']
             ]);
-
-            //Create a List of all VariationIds
-            $variationIdList = array();
-            foreach($resultData['documents'] as $variation)
-            {
-                $variationIdList[] = $variation['id'];
-            }
-
-            //Get the missing fields in ES from IDL
-            if(is_array($variationIdList) && count($variationIdList) > 0)
-            {
-                /**
-                 * @var \ElasticExportBasicPriceSearchEngine\IDL_ResultList\BasicPriceSearchEngine $idlResultList
-                 */
-                $idlResultList = pluginApp(\ElasticExportBasicPriceSearchEngine\IDL_ResultList\BasicPriceSearchEngine::class);
-                $idlResultList = $idlResultList->getResultList($variationIdList, $settings);
-            }
-
-            //Creates an array with the variationId as key to surpass the sorting problem
-            if(isset($idlResultList) && $idlResultList instanceof RecordList)
-            {
-                $this->createIdlArray($idlResultList);
-            }
-
-            foreach($resultData['documents'] as $item)
-            {
-                $rrp = $this->elasticExportHelper->getRecommendedRetailPrice($this->idlVariations[$item['id']], $settings) > $this->idlVariations[$item['id']]['variationRetailPrice.price']
-                    ? $this->elasticExportHelper->getRecommendedRetailPrice($this->idlVariations[$item['id']], $settings) : '';
-
-                $basePriceList = $this->elasticExportHelper->getBasePriceList($item, (float) $this->idlVariations[$item['id']]['variationRetailPrice.price']);
-                $shipmentAndHandling = $this->elasticExportHelper->getShippingCost($item['data']['item']['id'], $settings);
-                if(!is_null($shipmentAndHandling))
-                {
-                    $shipmentAndHandling = number_format((float)$shipmentAndHandling, 2, ',', '');
-                }
-                else
-                {
-                    $shipmentAndHandling = '';
-                }
-
-                $data = [
-                    'article_id'            => $item['data']['item']['id'],
-                    'deeplink'              => $this->elasticExportHelper->getUrl($item, $settings, true, false),
-                    'name'                  => $this->elasticExportHelper->getName($item, $settings),
-                    'short_description'     => $this->elasticExportHelper->getPreviewText($item, $settings),
-                    'description'           => $this->elasticExportHelper->getDescription($item, $settings, 256),
-                    'article_no'            => $this->idlVariations[$item['id']]['variationBase.customNumber'],
-                    'producer'              => $this->elasticExportHelper->getExternalManufacturerName($item['data']['item']['manufacturer']['id']),
-                    'model'                 => $item['data']['variation']['model'],
-                    'availability'          => $this->elasticExportHelper->getAvailability($item, $settings),
-                    'ean'                   => $this->elasticExportHelper->getBarcodeByType($item, ElasticExportCoreHelper::BARCODE_EAN),
-                    'isbn'                  => $this->elasticExportHelper->getBarcodeByType($item, ElasticExportCoreHelper::BARCODE_ISBN),
-                    'fedas'                 => $item['data']['item']['amazonFedas'],
-                    'unit'                  => $basePriceList['unit'],
-                    'price'                 => number_format((float)$this->idlVariations[$item['id']]['variationRetailPrice.price'], 2, '.', ''),
-                    'price_old'             => $rrp,
-                    'weight'                => $item['data']['variation']['weightG'],
-                    'category1'             => $this->elasticExportHelper->getCategoryBranch($item['data']['defaultCategories'][0]['id'], $settings, 1),
-                    'category2'             => $this->elasticExportHelper->getCategoryBranch($item['data']['defaultCategories'][0]['id'], $settings, 2),
-                    'category3'             => $this->elasticExportHelper->getCategoryBranch($item['data']['defaultCategories'][0]['id'], $settings, 3),
-                    'category4'             => $this->elasticExportHelper->getCategoryBranch($item['data']['defaultCategories'][0]['id'], $settings, 4),
-                    'category5'             => $this->elasticExportHelper->getCategoryBranch($item['data']['defaultCategories'][0]['id'], $settings, 5),
-                    'category6'             => $this->elasticExportHelper->getCategoryBranch($item['data']['defaultCategories'][0]['id'], $settings, 6),
-                    'category_concat'       => $this->elasticExportHelper->getCategory((int)$item['data']['defaultCategories'][0]['id'], $settings->get('lang'), $settings->get('plentyId')),
-                    'image_url_preview'     => $this->getImages($item, $settings, ';', 'preview'),
-                    'image_url'             => $this->elasticExportHelper->getMainImage($item, $settings),
-                    'shipment_and_handling' => $shipmentAndHandling,
-                    'unit_price'            => $this->elasticExportHelper->getBasePrice($item, $this->idlVariations),
-                    'unit_price_value'      => $basePriceList['price'],
-                    'unit_price_lot'        => $basePriceList['lot']
-                ];
-
-                $this->addCSVContent(array_values($data));
-            }
         }
     }
 
     /**
      * Get images.
-     * @param  array   $item
+     * @param  array   $variation
      * @param  KeyValue $settings
      * @param  string   $separator  = ','
      * @param  string   $imageType  = 'normal'
      * @return string
      */
-    public function getImages($item, KeyValue $settings, string $separator = ',', string $imageType = 'normal'):string
+    public function getImages($variation, KeyValue $settings, string $separator = ',', string $imageType = 'normal'):string
     {
-        $list = $this->elasticExportHelper->getImageList($item, $settings, $imageType);
+        $list = $this->elasticExportHelper->getImageList($variation, $settings, $imageType);
 
         if(count($list))
         {
@@ -181,25 +311,63 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     }
 
     /**
-     * @param RecordList $idlResultList
+     * Build the cache arrays for the item variation.
+     *
+     * @param $variation
+     * @param $settings
      */
-    private function createIdlArray($idlResultList)
+    private function buildCaches($variation, $settings)
     {
-        if($idlResultList instanceof RecordList)
+        if(!is_null($variation) && !is_null($variation['data']['item']['id']))
         {
-            foreach($idlResultList as $idlVariation)
-            {
-                if($idlVariation instanceof Record)
-                {
-                    $this->idlVariations[$idlVariation->variationBase->id] = [
-                        'itemBase.id' => $idlVariation->itemBase->id,
-                        'variationBase.id' => $idlVariation->variationBase->id,
-                        'variationBase.customNumber' => $idlVariation->variationBase->customNumber,
-                        'variationRetailPrice.price' => $idlVariation->variationRetailPrice->price,
-                        'variationRecommendedRetailPrice.price' => $idlVariation->variationRecommendedRetailPrice->price,
-                    ];
-                }
-            }
+            $this->shipmentCache[$variation['data']['item']['id']] = $this->elasticExportHelper->getShippingCost($variation['data']['item']['id'], $settings);
+
+            $this->manufacturerCache[$variation['data']['item']['id']] = $this->elasticExportHelper->getExternalManufacturerName((int)$variation['data']['item']['manufacturer']['id']);
         }
+    }
+
+    /**
+     * Get the shipment cost.
+     *
+     * @param $variation
+     * @return string
+     */
+    private function getShipment($variation):string
+    {
+        $shipment = null;
+        if(isset($this->shipmentCache) && array_key_exists($variation['data']['item']['id'], $this->shipmentCache))
+        {
+            $shipment = $this->shipmentCache[$variation['data']['item']['id']];
+        }
+
+        if(!is_null($shipment))
+        {
+            $shipment = number_format((float)$shipment, 2, ',', '');
+            return $shipment;
+        }
+
+        return '';
+    }
+
+    /**
+     * Get the manufacturer name.
+     *
+     * @param $variation
+     * @return string
+     */
+    private function getManufacturer($variation):string
+    {
+        $manufacturer = null;
+        if(isset($this->manufacturerCache) && array_key_exists($variation['data']['item']['id'], $this->manufacturerCache))
+        {
+            $manufacturer = $this->manufacturerCache[$variation['data']['item']['id']];
+        }
+
+        if(!is_null($manufacturer))
+        {
+            return $manufacturer;
+        }
+
+        return '';
     }
 }
