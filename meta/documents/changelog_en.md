@@ -1,6 +1,6 @@
 # Release Notes for Elastic Export Basic Price Search Engine
 
-## v1.0.2 (2017-05-18)
+## v1.0.2 (2017-05-19)
 
 ### Fixed
 - Try-catch to catch errors works as intended now.

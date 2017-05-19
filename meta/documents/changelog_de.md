@@ -1,6 +1,6 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
-## v1.0.2 (2017-05-18)
+## v1.0.2 (2017-05-19)
 
 ### Behoben
 - Die try-catch-Anweisung zum Abfangen von Fehlern funktioniert nun wie vorgesehen.
