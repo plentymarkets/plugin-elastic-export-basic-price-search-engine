@@ -3,12 +3,12 @@
 ## v1.0.2 (2017-05-18)
 
 ### Fixed
-- Try-catch to catch errors now works as intended.
-- The format plugin is now only based on Elastic Search.
+- Try-catch to catch errors works as intended now.
+- The format plugin is now completely based on Elastic Search.
 - The performance has been improved.
 - Outsourced the stock filter logic to the Elastic Export plugin.
 - The language works now correctly for the export format.
-- The barcode filter was amended and works correctly now for a specific market referrer.
+- The barcode filter was amended and works now correctly for a specific order referrer.
 
 ## v1.0.1 (2017-03-22)
 
