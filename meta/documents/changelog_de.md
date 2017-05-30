@@ -1,5 +1,10 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
+## v1.0.3 (2017-05-30)
+
+### Geändert
+- Das Plugin Elastic Export ist nun Voraussetzung zur Nutzung des Pluginformats BasicPriceSearchEngine.
+
 ## v1.0.2 (2017-05-19)
 
 ### Behoben
