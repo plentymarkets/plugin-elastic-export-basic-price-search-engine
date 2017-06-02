@@ -13,13 +13,9 @@
     "de": "Das Plugin Basic Price Search Engine fügt das Datenformat BasicPriceSearchEngine zum Elastischen Export hinzu.",
     "en": "This plugin adds the format BasicPriceSearchEngine to the Elastic Export."
   },
-  "categories": [
-    "3523"
-  ],
+  "categories": ["3523"],
   "version": "1.0.3",
-  "require": {
-    "ElasticExport": ">=1.0.18"
-  },
+  "require": ["ElasticExport"],
   "marketplaceName": {
     "de": "Basic Price Search Engine",
     "en": "Basic Price Search Engine"
