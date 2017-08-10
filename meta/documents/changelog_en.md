@@ -1,5 +1,10 @@
 # Release Notes for Elastic Export Basic Price Search Engine
 
+## v1.0.4 (2017-08-09)
+
+### Fixed
+ - An issue was fixed which caused the images not to be ordered by the position.
+
 ## v1.0.3 (2017-05-30)
 
 ### Changed
