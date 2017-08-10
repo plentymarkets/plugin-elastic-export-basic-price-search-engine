@@ -21,6 +21,8 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     use Loggable;
 
     const DELIMITER = '	';
+
+    const IMAGE_TYPE_NORMAL = 'normal';
     
     /**
      * @var ElasticExportCoreHelper
@@ -247,6 +249,8 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
             $basePriceList = $this->elasticExportHelper->getBasePriceList($variation, $priceList['variationRetailPrice.price'], $settings->get('lang'));
 
+            $imageList = $this->getImageList($variation, $settings, self::IMAGE_TYPE_NORMAL);
+
             $data = [
                 'article_id'            => $variation['data']['item']['id'],
                 'deeplink'              => $this->elasticExportHelper->getMutatedUrl($variation, $settings, true, false),
@@ -271,8 +275,8 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                 'category5'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 5),
                 'category6'             => $this->elasticExportHelper->getCategoryBranch($variation['data']['defaultCategories'][0]['id'], $settings, 6),
                 'category_concat'       => $this->elasticExportHelper->getCategory((int)$variation['data']['defaultCategories'][0]['id'], $settings->get('lang'), $settings->get('plentyId')),
-                'image_url_preview'     => $this->getImages($variation, $settings, ';', 'preview'),
-                'image_url'             => $this->elasticExportHelper->getMainImage($variation, $settings),
+                'image_url_preview'     => $imageList['preview']['url'],
+                'image_url'             => $imageList['normal']['url'],
                 'shipment_and_handling' => $shipmentAndHandling,
                 'unit_price'            => $this->elasticExportHelper->getBasePrice($variation, $priceList, $settings->get('lang')),
                 'unit_price_value'      => $basePriceList['price'],
@@ -290,25 +294,46 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         }
     }
 
-    /**
-     * Get images.
-     * @param  array   $variation
-     * @param  KeyValue $settings
-     * @param  string   $separator  = ','
-     * @param  string   $imageType  = 'normal'
-     * @return string
-     */
-    public function getImages($variation, KeyValue $settings, string $separator = ',', string $imageType = 'normal'):string
-    {
-        $list = $this->elasticExportHelper->getImageList($variation, $settings, $imageType);
+	/**
+	 * Get image information.
+	 *
+	 * @param  array    $variation
+	 * @param  KeyValue $settings
+	 * @param  string   $imageType
+	 * @return array
+	 */
+	private function getImageList($variation, KeyValue $settings, string $imageType):array
+	{
+		$image = $this->elasticExportHelper->getImageListInOrder($variation, $settings, 1, $this->elasticExportHelper::VARIATION_IMAGES, $imageType, true);
 
-        if(count($list))
-        {
-            return implode($separator, $list);
-        }
+		$imageInformation = [
+			'preview' => [
+				'url' => '',
+			],
+			'normal' => [
+				'url' => '',
+			]
+		];
 
-        return '';
-    }
+		foreach($image as $imageData)
+		{
+			if(strlen($imageData['urlPreview']) > 0)
+			{
+				$imageInformation['preview'] = [
+					'url' => $imageData['urlPreview'],
+				];
+			}
+
+			if(strlen($imageData['url']) > 0)
+			{
+				$imageInformation['normal'] = [
+					'url' => $imageData['url'],
+				];
+			}
+		}
+
+		return $imageInformation;
+	}
 
     /**
      * Build the cache arrays for the item variation.
