@@ -1,5 +1,10 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
+## v1.0.5 (2017-09-05)
+
+### Geändert
+ - Der User Guide wurde aktualisiert.
+
 ## v1.0.4 (2017-08-09)  
 
 ### Behoben 
