@@ -65,7 +65,7 @@ The following table lists details for settings, format settings and recommended 
             Markets
         </td>
         <td>
-            Choose one or multiple order referrer. The chosen order referrer has to be active at the variation for the item to be exported.
+            Choose one or multiple order referrers. The chosen order referrer has to be active at the variation for the item to be exported.
         </td>
     </tr>
     <tr>
@@ -115,7 +115,7 @@ The following table lists details for settings, format settings and recommended 
             deeplink
         </td>
         <td>
-        	The product URL according to the format setting <b>product URL</b>, <b>client</b> and <b>order referrer</b>.
+        	The product URL according to the format setting <b>product URL</b>, <b>Client</b> and <b>Order referrer</b>.
         </td>
     </tr>
     <tr>
@@ -131,7 +131,7 @@ The following table lists details for settings, format settings and recommended 
 			short_description
 		</td>
 		<td>
-			The <b>preview description</b> of the item depending on the format setting <b>preview text</b>.
+			The <b>preview description</b> of the item depending on the format setting <b>Preview text</b>.
 		</td>
 	</tr>
     <tr>
@@ -163,7 +163,7 @@ The following table lists details for settings, format settings and recommended 
             model
         </td>
         <td>
-            The <b>model</b> within <b>Items » Edit item » Open item » Open variation » Settings » Basic Settings</b>.
+            The <b>model</b> saved under <b>Items » Edit item » Open item » Open variation » Settings » Basic Settings</b>.
         </td>
     </tr>
     <tr>
@@ -171,7 +171,7 @@ The following table lists details for settings, format settings and recommended 
             availabilty
         </td>
         <td>
-            The <b>name of the availabilty</b> within <b>Settings » Items » Item availabilty</b> or according to the format setting <b>Override item availability</b>.
+            The <b>name of the availabilty</b> saved under <b>Settings » Items » Item availabilty</b> or according to the format setting <b>Override item availability</b>.
         </td>
     </tr>
     <tr>
@@ -211,7 +211,7 @@ The following table lists details for settings, format settings and recommended 
 			price
 		</td>
 		<td>
-			The <b>retail price</b> of the variation, according to the format setting <b>order referrer</b>.
+			The <b>retail price</b> of the variation, according to the format setting <b>Order referrer</b>.
 		</td>
 	</tr>
 	<tr>
@@ -219,7 +219,7 @@ The following table lists details for settings, format settings and recommended 
 			price_old
 		</td>
 		<td>
-			The <b>recommended retail price</b> of the variation, according to the format setting <b>order referrer</b>.
+			The <b>recommended retail price</b> of the variation, according to the format setting <b>Order referrer</b>.
 		</td>
 	</tr>
 	<tr>
@@ -307,7 +307,7 @@ The following table lists details for settings, format settings and recommended 
             shipment_and_handling
         </td>
         <td>
-            The for the item configured <b>shipping costs</b>.
+            For the item configured <b>shipping costs</b>.
         </td>
     </tr>
     <tr>
@@ -315,7 +315,7 @@ The following table lists details for settings, format settings and recommended 
 			unit_price
 		</td>
 		<td>
-			The <b>base price</b> in the format "price / unit". (e.g.: 10.00 EUR / Kilogramm)
+			The <b>base price</b> in the format "price / unit". (e.g.: 10.00 EUR / kilogram)
 		</td>
 	</tr>
 	<tr>
@@ -331,7 +331,7 @@ The following table lists details for settings, format settings and recommended 
     		unit_price_lot
     	</td>
     	<td>
-    		The <b>lot</b> of the evaluated <b>base price information</b>.
+    		The <b>content</b> of the evaluated <b>base price information</b>.
     	</td>
     </tr>
     <tr>
