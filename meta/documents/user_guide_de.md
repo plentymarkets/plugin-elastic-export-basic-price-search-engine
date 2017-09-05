@@ -331,7 +331,7 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
     		unit_price_lot
     	</td>
     	<td>
-    		<b>Inhalt:</b> Der <b>Lot</b> aus den berechneten <b>Grundpreisinformationen</b>.
+    		<b>Inhalt:</b> Der <b>Inhalt</b> aus den berechneten <b>Grundpreisinformationen</b>.
     	</td>
     </tr>
     <tr>
