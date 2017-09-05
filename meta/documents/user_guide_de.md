@@ -115,7 +115,7 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
             deeplink
         </td>
         <td>
-            <b>Inhalt:</b> Der <b>URL-Pfad</b> des Artikels abhängig vom gewählten <b>Mandanten</b> in den Formateinstellungen.
+            <b>Inhalt:</b> Der <b>URL-Pfad</b> des Artikels abhängig von den Formateinstellungen <b>Mandant</b>, <b>Produkt-URL</b> und <b>Auftragsherkunft</b>.
         </td>
     </tr>
     <tr>
@@ -195,7 +195,7 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
             fedas
         </td>
         <td>
-            <b>Inhalt:</b> Der <b>Kategoriepfad der Standardkategorie</b> für den in den Formateinstellungen definierten <b>Mandanten</b>.
+            <b>Inhalt:</b> 
         </td>
     </tr>
     <tr>
@@ -211,7 +211,7 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
 			price
 		</td>
 		<td>
-			<b>Inhalt:</b> Der <b>Kategoriepfad der Standardkategorie</b> für den in den Formateinstellungen definierten <b>Mandanten</b>.
+			<b>Inhalt:</b> Der <b>Verkaufspreis</b> der Variante, abhängig der Formateinstellung <b>Auftragsherkunft</b>.
 		</td>
 	</tr>
 	<tr>
@@ -219,7 +219,7 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
 			price_old
 		</td>
 		<td>
-			<b>Inhalt:</b> Der <b>Kategoriepfad der Standardkategorie</b> für den in den Formateinstellungen definierten <b>Mandanten</b>.
+			<b>Inhalt:</b> Der <b>Angebotspreis</b> der Variante, abhängig der Formateinstellung <b>Auftragsherkunft</b>.
 		</td>
 	</tr>
 	<tr>
@@ -339,7 +339,7 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
     		variation_id
     	</td>
     	<td>
-    		<b>Inhalt:</b> Die <b>Varianten-ID</b>
+    		<b>Inhalt:</b> Die <b>Varianten-ID</b>.
     	</td>
     </tr>
 </table>
