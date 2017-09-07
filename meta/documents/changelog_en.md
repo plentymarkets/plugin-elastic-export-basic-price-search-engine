@@ -1,5 +1,13 @@
 # Release Notes for Elastic Export Basic Price Search Engine
 
+## v1.1.0 (2017-09-07)
+
+### Changed
+ - The user guide was updated.
+
+### Deleted
+- The field <b>fedas</b> was deleted.
+
 ## v1.0.4 (2017-08-09)
 
 ### Fixed
