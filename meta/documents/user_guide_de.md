@@ -191,14 +191,6 @@ In der folgenden Tabelle finden Sie spezifische Hinweise zu den Einstellungen, F
         </td>
     </tr>
     <tr>
-        <td>
-            fedas
-        </td>
-        <td>
-            <b>Inhalt:</b> 
-        </td>
-    </tr>
-    <tr>
 		<td>
 			unit
 		</td>

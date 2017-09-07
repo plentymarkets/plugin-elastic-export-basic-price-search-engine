@@ -191,14 +191,6 @@ The following table lists details for settings, format settings and recommended 
         </td>
     </tr>
     <tr>
-        <td>
-            fedas
-        </td>
-        <td>
-            
-        </td>
-    </tr>
-    <tr>
 		<td>
 			unit
 		</td>
