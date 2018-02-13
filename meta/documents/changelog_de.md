@@ -1,5 +1,10 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
+## v1.1.1 (2018-02-13)
+
+### Hinzugefügt
+- Der PriceHelper berücksichtigt nun die Einstellung "Verkaufspreis".
+
 ## v1.1.0 (2017-09-07)
 
 ### Geändert
