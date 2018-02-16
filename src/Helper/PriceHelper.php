@@ -17,7 +17,9 @@ class PriceHelper
     use Loggable;
 
     const TRANSFER_RRP_YES = 1;
-
+	const NET_PRICE = 'netPrice';
+	const GROSS_PRICE = 'grossPrice';
+    
     /**
      * @var SalesPriceSearchRepositoryContract
      */
@@ -64,7 +66,15 @@ class PriceHelper
         $salesPriceSearch = $this->salesPriceSearchRepository->search($this->salesPriceSearchRequest);
         if($salesPriceSearch instanceof SalesPriceSearchResponse)
         {
-            $variationPrice = (float)$salesPriceSearch->price;
+		   if(isset($salesPriceSearch->price) &&
+			   ($settings->get('retailPrice') == self::GROSS_PRICE || is_null($settings->get('retailPrice'))))
+		   {
+			  $variationPrice = (float)$salesPriceSearch->price;
+		   }
+		   elseif(isset($salesPriceSearch->priceNet) && $settings->get('retailPrice') == self::NET_PRICE)
+		   {
+			  $variationPrice = (float)$salesPriceSearch->priceNet;
+		   }
         }
 
         // Getting the recommended retail price
@@ -75,7 +85,15 @@ class PriceHelper
 
             if($rrpPriceSearch instanceof SalesPriceSearchResponse)
             {
-                $variationRrp = (float)$rrpPriceSearch->price;
+			   if(isset($salesPriceSearch->price) && 
+				   ($settings->get('retailPrice') == self::GROSS_PRICE || is_null($settings->get('retailPrice'))))
+			   {
+				  $variationRrp = (float)$salesPriceSearch->price;
+			   }
+			   elseif(isset($salesPriceSearch->priceNet) && $settings->get('retailPrice') == self::NET_PRICE)
+			   {
+				  $variationRrp = (float)$salesPriceSearch->priceNet;
+			   }
             }
         }
 
