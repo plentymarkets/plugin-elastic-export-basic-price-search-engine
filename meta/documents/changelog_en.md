@@ -1,5 +1,10 @@
 # Release Notes for Elastic Export Basic Price Search Engine
 
+## v1.1.1 (2018-02-16)
+
+### Changed
+- Updated plugin short description.
+
 ## v1.1.0 (2017-09-07)
 
 ### Changed
