@@ -1,16 +1,17 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
-<<<<<<< HEAD
+## v1.1.3 (2018-02-19)
+
+### Hinzugefügt
+- Der PriceHelper berücksichtigt nun die Einstellung "Währung live umrechnen".
+
 ## v1.1.1 (2018-02-16)
 
 ### Geändert
 - Plugin-Kurzbeschreibung wurde angepasst.
-=======
-## v1.1.1 (2018-02-13)
 
 ### Hinzugefügt
 - Der PriceHelper berücksichtigt nun die Einstellung "Verkaufspreis".
->>>>>>> ec8cba02b83411c50dd0f73f8e266bfd40bc2693
 
 ## v1.1.0 (2017-09-07)
 
