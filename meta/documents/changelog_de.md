@@ -5,10 +5,12 @@
 ### Hinzugefügt
 - Der PriceHelper berücksichtigt nun die Einstellung "Währung live umrechnen".
 
-## v1.1.1 (2018-02-16)
+## v1.1.2 (2018-02-16)
 
 ### Geändert
 - Plugin-Kurzbeschreibung wurde angepasst.
+
+## v1.1.1 (2018-02-13)
 
 ### Hinzugefügt
 - Der PriceHelper berücksichtigt nun die Einstellung "Verkaufspreis".
