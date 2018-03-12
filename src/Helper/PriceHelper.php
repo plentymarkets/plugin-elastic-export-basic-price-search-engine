@@ -83,12 +83,17 @@ class PriceHelper
     public function getPriceList($variation, KeyValue $settings):array
     {
         $variationPrice = $variationRrp = 0.00;
+    	$countryId = $settings->get('destination');
+ 	$currency = $this->currencyRepositoryContract->getCountryCurrency($countryId)->currency;
 
         if($this->salesPriceSearchRequest instanceof SalesPriceSearchRequest)
         {
             $this->salesPriceSearchRequest->variationId = $variation['id'];
             $this->salesPriceSearchRequest->referrerId = $settings->get('referrerId');
+	    $this->salesPriceSearchRequest->plentyId = $settings->get('plentyId');
             $this->salesPriceSearchRequest->type = 'default';
+	    $this->salesPriceSearchRequest->countryId = $countryId;
+ 	    $this->salesPriceSearchRequest->currency = $currency;
         }
 
 	    if(!is_null($settings->get('liveConversion')) &&
