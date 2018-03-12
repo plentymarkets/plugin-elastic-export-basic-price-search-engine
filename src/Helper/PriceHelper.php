@@ -126,7 +126,7 @@ class PriceHelper
 
             if($rrpPriceSearch instanceof SalesPriceSearchResponse)
             {
-				$variationRrp = $this->getPriceByRetailPriceSettings($salesPriceSearch, $settings);
+				$variationRrp = $this->getPriceByRetailPriceSettings($rrpPriceSearch, $settings);
             }
         }
 
