@@ -1,6 +1,9 @@
 # Release Notes for Elastic Export Basic Price Search Engine
 
-## v1.1.3 (2018-03-28)
+## v1.1.3 (2018-04-05)
+
+### Added
+- The PriceHelper will now consider the new setting "Live currency conversion".
 
 ### Geändert
 - The class FiltrationService is responsible for the filtration of all variations.
