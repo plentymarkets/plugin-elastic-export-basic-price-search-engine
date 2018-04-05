@@ -53,6 +53,7 @@ class PriceHelper
 	 * @var array
 	 */
 	private $currencyConversionList = [];
+	
 	/**
 	 * @var CurrencyRepositoryContract
 	 */
