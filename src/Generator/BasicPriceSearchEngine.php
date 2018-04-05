@@ -3,6 +3,7 @@
 namespace ElasticExportBasicPriceSearchEngine\Generator;
 
 use ElasticExport\Helper\ElasticExportStockHelper;
+use ElasticExport\Services\FiltrationService;
 use ElasticExportBasicPriceSearchEngine\Helper\PriceHelper;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
@@ -55,6 +56,11 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     private $manufacturerCache;
 
     /**
+     * @var FiltrationService
+     */
+    private $filtrationService;
+
+    /**
      * BasicPriceSearchEngine constructor.
      *
      * @param ArrayHelper $arrayHelper
@@ -80,6 +86,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         $this->elasticExportHelper = pluginApp(ElasticExportCoreHelper::class);
 
         $settings = $this->arrayHelper->buildMapFromObjectList($formatSettings, 'key', 'value');
+        $this->filtrationService = pluginApp(FiltrationService::class, [$settings, $filter]);
 
         $this->setDelimiter(self::DELIMITER);
 
@@ -138,7 +145,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                         }
 
                         // If filtered by stock is set and stock is negative, then skip the variation
-                        if ($this->elasticExportStockHelper->isFilteredByStock($variation, $filter) === true)
+                        if ($this->filtrationService->filter($variation))
                         {
                             $this->getLogger(__METHOD__)->info('ElasticExportBasicPriceSearchEngine::logs.variationNotPartOfExportStock', [
                                 'VariationId' => $variation['id']
