@@ -1,5 +1,10 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
+## v1.1.4 (2018-04-30)
+
+### Geändert
+- Laravel 5.5 Update.
+
 ## v1.1.3 (2018-04-05)
 
 ### Hinzugefügt
