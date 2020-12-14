@@ -2,21 +2,26 @@
 
 namespace ElasticExportBasicPriceSearchEngine;
 
+use ElasticExportBasicPriceSearchEngine\Catalog\Providers\CatalogBootServiceProvider;
 use Plenty\Modules\DataExchange\Services\ExportPresetContainer;
 use Plenty\Plugin\DataExchangeServiceProvider;
+use Plenty\Plugin\ServiceProvider;
 
 /**
  * Class ElasticExportBasicPriceSearchEngineServiceProvider
  * @package ElasticExportBasicPriceSearchEngine
  */
-class ElasticExportBasicPriceSearchEngineServiceProvider extends DataExchangeServiceProvider
+class ElasticExportBasicPriceSearchEngineServiceProvider extends ServiceProvider
 {
+
     /**
      * Abstract function for registering the service provider.
+     *
+     * @throws \ErrorException
      */
     public function register()
     {
-
+        $this->getApplication()->register(CatalogBootServiceProvider::class);
     }
 
     /**
