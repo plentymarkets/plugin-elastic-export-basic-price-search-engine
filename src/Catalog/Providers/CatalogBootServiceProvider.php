@@ -11,6 +11,8 @@ class CatalogBootServiceProvider extends ServiceProvider
      * @param TemplateContainerContract $container
      */
     public function boot(TemplateContainerContract $container) {
+
         $container->register('ElasticExportBasicPriceSearchEngine', 'exampleType', CatalogTemplateProvider::class);
+
     }
 }

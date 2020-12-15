@@ -24,142 +24,142 @@ class GeneralDataProvider extends BaseDataProvider
             [
                 'key' => 'article_id',
                 'label' => 'Article Id',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'deeplink',
                 'label' => 'Deeplink',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'short_description',
                 'label' => 'Short description',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'description',
                 'label' => 'Description',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'article',
                 'label' => 'Article No',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'producer',
                 'label' => 'Producer',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'model',
                 'label' => 'Model',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'availability',
                 'label' => 'Availability',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'ean',
                 'label' => 'EAN',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'isbn',
                 'label' => 'ISBN',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'unit',
                 'label' => 'Unit',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'price',
                 'label' => 'Price',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'price_old',
                 'label' => 'Price old',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'weight',
                 'label' => 'Weight',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category1',
                 'label' => 'Category1',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category2',
                 'label' => 'Category2',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category3',
                 'label' => 'Category3',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category4',
                 'label' => 'Category4',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category5',
                 'label' => 'Category5',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category6',
                 'label' => 'Category6',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'category_concat',
                 'label' => 'Category Concat',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'image_url_preview',
                 'label' => 'Image Url Preview',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'image_url',
                 'label' => 'Image Url',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'shipment_and_handling',
                 'label' => 'Shipment & Handling',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'unit_price',
                 'label' => 'Unit Price',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'unit_price_value',
                 'label' => 'Unit Price Value',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'unit_price_lot',
                 'label' => 'Unit Price Lot',
-                'required' => true
+                'required' => false
             ],
             [
                 'key' => 'variation_id',
                 'label' => 'Variation Id',
-                'required' => true
+                'required' => false
             ]
         ];
     }
