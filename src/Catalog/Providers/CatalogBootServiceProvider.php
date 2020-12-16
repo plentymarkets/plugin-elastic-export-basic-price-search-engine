@@ -15,13 +15,16 @@ class CatalogBootServiceProvider extends ServiceProvider
 
         $template->addSetting([
             'key' => 'testSelect',
+            'isVisible' => true,
             'type' => 'select',
             'label' => 'select',
             'values' =>
             [
+                [
                 'caption' => 'test',
                 'value' => 1
-            ]
+                ]
+            ],
         ]);
     }
 }

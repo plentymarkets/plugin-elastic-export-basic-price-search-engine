@@ -32,7 +32,36 @@ class CatalogTemplateProvider extends BaseTemplateProvider
      */
     public function getFilter(): array
     {
-        return [];
+        return [
+//            [
+//                'name' => 'variationMarket.isVisibleForMarket',
+//                'params' => [
+//                      [
+//                          'name' => 'marketId',
+//                          'value' => 9.00
+//                      ]
+//                ]
+//            ],
+        //Check if variation is active
+//            [
+//                'name' => 'variationBase.isActive',
+//                'params' => [
+//                    [
+//                        'name' => 'active',
+//                        'value' => true
+//                    ]
+//                ]
+//            ],
+            [
+                'name' => 'variationBase.hasBarcode',
+                'params' => [
+                    [
+                        'name' => 'exist',
+                        'value' => true
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
