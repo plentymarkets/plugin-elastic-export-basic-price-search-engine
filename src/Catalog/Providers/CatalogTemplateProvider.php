@@ -41,26 +41,7 @@ class CatalogTemplateProvider extends BaseTemplateProvider
 //                          'value' => 9.00
 //                      ]
 //                ]
-//            ],
-        //Check if variation is active
-//            [
-//                'name' => 'variationBase.isActive',
-//                'params' => [
-//                    [
-//                        'name' => 'active',
-//                        'value' => true
-//                    ]
-//                ]
-//            ],
-            [
-                'name' => 'variationBase.hasBarcode',
-                'params' => [
-                    [
-                        'name' => 'exist',
-                        'value' => true
-                    ]
-                ]
-            ]
+//            ]
         ];
     }
 
