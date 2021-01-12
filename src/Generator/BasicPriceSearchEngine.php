@@ -4,10 +4,13 @@ namespace ElasticExportBasicPriceSearchEngine\Generator;
 
 use ElasticExport\Helper\ElasticExportStockHelper;
 use ElasticExport\Services\FiltrationService;
+use ElasticExportBasicPriceSearchEngine\Catalog\DataProviders\BaseFieldsDataProvider;
+use ElasticExportBasicPriceSearchEngine\Catalog\Providers\CatalogTemplateProvider;
 use ElasticExportBasicPriceSearchEngine\Helper\PriceHelper;
 use Plenty\Modules\Catalog\Contracts\CatalogContentRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\CatalogExportTypeContainerContract;
 use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
+use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
@@ -439,27 +442,36 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
     public function updateCatalogData()
     {
+        $catalog = $this->registerTemplate();
+        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
+        $catalogExportTypeContainer = app(CatalogExportTypeContainerContract::class);
+        $fieldGroupContainer = $catalogExportTypeContainer->getExportType('variation')->getFieldGroupContainer();
 
         $data = [];
-        $identifier = 'deeplink';
-        $dataProviderKey = utf8_encode($this->getDataProviderByIdentifier($identifier));
+        $values = pluginApp(BaseFieldsDataProvider::class)->get();
 
-        $data['mappings'][$dataProviderKey]['fields'][] = [
-            'key' => utf8_encode($identifier),
-            'sources' => [
-                [
-                    'fieldId' => utf8_encode('item-id'),
-                    'key' => 'id',
-                    'lang' => 'de',
-                    'type' => 'item',
-                    'id' => null
+        foreach ($values as $value){
+            $field = mb_convert_encoding($this->getCatalogMappingData($value['default'], $fieldGroupContainer), 'UTF-8');;
+
+            $dataProviderKey = utf8_encode($this->getDataProviderByIdentifier($value['key']));
+            $data['mappings'][$dataProviderKey]['fields'][] = [
+                'key' => utf8_encode($value['key']),
+                'sources' => [
+                    [
+                        'fieldId' => utf8_encode($field['default']),
+                        'key' => $field['key'],
+                        'lang' => 'de',
+                        'type' => $field['type'],
+                        'id' => (string)$field['type']
+                    ]
                 ]
-            ]
-        ];
+            ];
+        }
+
 
         $catalogContentRepository = pluginApp(CatalogContentRepositoryContract::class);
         // save catalog
-        $test = $catalogContentRepository->update('b6ad478b-d070-5110-9bd4-a1c52feecda5', $data);
+        $test = $catalogContentRepository->update($catalog['id'], $data);
 
         return true;
     }
@@ -476,4 +488,39 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
         return 'general';
     }
+
+    private function getCatalogMappingData(string $fieldId, $fieldGroupContainer)
+    {
+        $explodedId = explode('-', $fieldId);
+        $groupId = $explodedId[0];
+        unset($explodedId[0]);
+
+        $fieldGroup = $fieldGroupContainer->getFieldGroupById($groupId);
+
+        $fieldId = implode('-', $explodedId);
+        $field = $fieldGroup->getFieldById($fieldId);
+
+        $newFieldId = $fieldGroup->getId();
+
+        if (isset($field['fieldId'])) {
+            $newFieldId .= '-' . $field['fieldId'];
+        }
+
+        $field['fieldId'] = $newFieldId;
+        return $field;
+    }
+
+    private function registerTemplate()
+    {
+        $templateContainer = pluginApp(TemplateContainerContract::class);
+        $catalogRepository = pluginApp(CatalogRepositoryContract::class);
+        $template = $templateContainer->register(
+            'ElasticExportBasicPriceSearchEngine',
+            'exampleType',
+            CatalogTemplateProvider::class
+        );
+
+        return $catalogRepository->create(['name' => 'NumeTest', 'template' => $template->getIdentifier()->toArray()]);
+    }
+
 }
