@@ -5,12 +5,16 @@ namespace ElasticExportBasicPriceSearchEngine\Generator;
 use ElasticExport\Helper\ElasticExportStockHelper;
 use ElasticExport\Services\FiltrationService;
 use ElasticExportBasicPriceSearchEngine\Helper\PriceHelper;
+use Plenty\Modules\Catalog\Contracts\CatalogContentRepositoryContract;
+use Plenty\Modules\Catalog\Contracts\CatalogExportTypeContainerContract;
+use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
 use ElasticExport\Helper\ElasticExportCoreHelper;
 use Plenty\Modules\Helper\Models\KeyValue;
 use Plenty\Modules\Item\Search\Contracts\VariationElasticSearchScrollRepositoryContract;
+use Plenty\Modules\Market\MarketLogIdentifier;
 use Plenty\Plugin\Log\Loggable;
 
 /**
@@ -82,6 +86,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     protected function generatePluginContent($elasticSearch, array $formatSettings = [], array $filter = [])
     {
+        $catalog = $this->getCatalog('ElasticTest1','b6ad478b-d070-5110-9bd4-a1c52feecda5');
         $this->elasticExportStockHelper = pluginApp(ElasticExportStockHelper::class);
         $this->elasticExportHelper = pluginApp(ElasticExportCoreHelper::class);
 
@@ -399,5 +404,76 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         }
 
         return '';
+    }
+
+    /**
+     * @param string $catalogName
+     * @param string $templateIdentifier
+     * @return array
+     */
+    public function getCatalog(string $catalogName, string $templateIdentifier)
+    {
+        $page = 1;
+
+        $catalogRepo = pluginApp(CatalogRepositoryContract::class);
+        $this->updateCatalogData();
+        try {
+            do {
+                $catalogList = $catalogRepo->all($page);
+
+                foreach ($catalogList->getResult() as $catalog) {
+                    if ($catalog['name'] == $catalogName && $catalog['template'] == $templateIdentifier) {
+                        return $catalog;
+                    }
+                }
+
+                $page++;
+            } while (!$catalogList->isLastPage());
+        } catch (\Throwable $exception) {
+            $this->getLogger(MarketLogIdentifier::OTTO_MARKETPLACE)->logException($exception);
+        }
+
+        return null;
+    }
+
+
+    public function updateCatalogData()
+    {
+
+        $data = [];
+        $identifier = 'deeplink';
+        $dataProviderKey = utf8_encode($this->getDataProviderByIdentifier($identifier));
+
+        $data['mappings'][$dataProviderKey]['fields'][] = [
+            'key' => utf8_encode($identifier),
+            'sources' => [
+                [
+                    'fieldId' => utf8_encode('item-id'),
+                    'key' => 'id',
+                    'lang' => 'de',
+                    'type' => 'item',
+                    'id' => null
+                ]
+            ]
+        ];
+
+        $catalogContentRepository = pluginApp(CatalogContentRepositoryContract::class);
+        // save catalog
+        $test = $catalogContentRepository->update('b6ad478b-d070-5110-9bd4-a1c52feecda5', $data);
+
+        return true;
+    }
+
+    private function getDataProviderByIdentifier(string $identifier)
+    {
+        if (preg_match('/productDescription.attributes./', $identifier)) {
+            return 'secondaryGeneral';
+        }
+
+        if(preg_match('/bulletPoints/', $identifier)) {
+            return 'bulletPoints';
+        }
+
+        return 'general';
     }
 }

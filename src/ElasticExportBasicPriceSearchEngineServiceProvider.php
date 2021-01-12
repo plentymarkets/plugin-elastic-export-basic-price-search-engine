@@ -3,6 +3,8 @@
 namespace ElasticExportBasicPriceSearchEngine;
 
 use ElasticExportBasicPriceSearchEngine\Catalog\Providers\CatalogBootServiceProvider;
+use ElasticExportBasicPriceSearchEngine\Crons\ExportCron;
+use Plenty\Modules\Cron\Services\CronContainer;
 use Plenty\Modules\DataExchange\Services\ExportPresetContainer;
 use Plenty\Plugin\ServiceProvider;
 
@@ -39,4 +41,10 @@ class ElasticExportBasicPriceSearchEngineServiceProvider extends ServiceProvider
             true
         );
     }
+    public function boot(CronContainer $cronContainer)
+    {
+        // register crons
+        $cronContainer->add(CronContainer::EVERY_FIFTEEN_MINUTES, ExportCron::class);
+    }
+
 }
