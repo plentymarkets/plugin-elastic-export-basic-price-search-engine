@@ -11,6 +11,7 @@ use Plenty\Modules\Catalog\Contracts\CatalogContentRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\CatalogExportTypeContainerContract;
 use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
+use Plenty\Modules\Catalog\Contracts\TemplateContract;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
@@ -31,7 +32,10 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     const DELIMITER = '	';
 
     const IMAGE_TYPE_NORMAL = 'normal';
-    
+
+    /** @var TemplateContainerContract */
+    private $templateContainer;
+
     /**
      * @var ElasticExportCoreHelper
      */
@@ -442,7 +446,9 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
     public function updateCatalogData()
     {
-        $catalog = $this->registerTemplate();
+        $template = $this->registerTemplate();
+        $catalog = $this->create($template->getIdentifier())->toArray();
+
         /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
         $catalogExportTypeContainer = app(CatalogExportTypeContainerContract::class);
         $fieldGroupContainer = $catalogExportTypeContainer->getExportType('variation')->getFieldGroupContainer();
@@ -510,17 +516,25 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         return $field;
     }
 
+    /**
+     *
+     * @param array $data
+     * @return TemplateContract
+     */
     private function registerTemplate()
     {
-        $templateContainer = pluginApp(TemplateContainerContract::class);
-        $catalogRepository = pluginApp(CatalogRepositoryContract::class);
-        $template = $templateContainer->register(
+
+        return $this->templateContainer->register(
             'ElasticExportBasicPriceSearchEngine',
             'exampleType',
             CatalogTemplateProvider::class
         );
 
-        return $catalogRepository->create(['name' => 'NumeTest', 'template' => $template->getIdentifier()->toArray()]);
     }
 
+    public function create($template)
+    {
+        $catalogRepository = pluginApp(CatalogRepositoryContract::class);
+        return $catalogRepository->create(['name' => 'NumeTest', 'template' => $template]);
+    }
 }
