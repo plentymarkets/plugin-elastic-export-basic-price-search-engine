@@ -13,6 +13,7 @@ use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContract;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
+use Plenty\Modules\Helper\Contracts\KeyValueStorageRepositoryContract;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
 use ElasticExport\Helper\ElasticExportCoreHelper;
@@ -446,8 +447,10 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
     public function updateCatalogData()
     {
-        $template = $this->registerTemplate();
-        $catalog = $this->create($template->getIdentifier())->toArray();
+//        $this->activateTemplateInSystem();
+//        $template = $this->registerTemplate();
+//        $catalog = $this->create($template->getIdentifier())->toArray();
+        $catalog = $this->create('NumeTest4','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
 
         /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
         $catalogExportTypeContainer = app(CatalogExportTypeContainerContract::class);
@@ -464,7 +467,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                 'key' => utf8_encode($value['key']),
                 'sources' => [
                     [
-                        'fieldId' => utf8_encode($field['default']),
+                        'fieldId' => utf8_encode($value['default']),
                         'key' => $field['key'],
                         'lang' => 'de',
                         'type' => $field['type'],
@@ -518,7 +521,6 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
     /**
      *
-     * @param array $data
      * @return TemplateContract
      */
     private function registerTemplate()
@@ -532,9 +534,26 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
     }
 
-    public function create($template)
+    public function create($name ,$template)
     {
         $catalogRepository = pluginApp(CatalogRepositoryContract::class);
-        return $catalogRepository->create(['name' => 'NumeTest', 'template' => $template]);
+
+        return $catalogRepository->create(['name' => $name, 'template' => $template]);
+    }
+
+    private function activateTemplateInSystem()
+    {
+        /** @var KeyValueStorageRepositoryContract $keyValueStorageRepository */
+        $keyValueStorageRepository = app(KeyValueStorageRepositoryContract::class);
+        $templates = $keyValueStorageRepository->loadValue('otto_market_category_groups', []);
+
+        $newTemplate = 'ElasticExportBasicPriceSearchEngine';
+
+        if(strlen($newTemplate)) {
+            $templates[] = $newTemplate;
+            $keyValueStorageRepository->saveValue('otto_market_category_groups', array_unique($templates));
+        } else {
+            throw new \Exception('The selected category group "$newTemplate" is not valid.');
+        }
     }
 }
