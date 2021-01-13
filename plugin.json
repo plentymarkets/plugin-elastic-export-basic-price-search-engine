@@ -16,5 +16,8 @@
   "categories": ["3523"],
   "version": "1.1.4",
   "require": ["ElasticExport"],
-  "marketplaceName": "Basic Price Search Engine"
+  "marketplaceName": "Basic Price Search Engine",
+  "runOnBuild": [
+    "ElasticExportBasicPriceSearchEngine\\Migrations\\CatalogMigration"
+  ]
 }

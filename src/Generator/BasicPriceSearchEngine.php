@@ -438,7 +438,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                 $page++;
             } while (!$catalogList->isLastPage());
         } catch (\Throwable $exception) {
-            $this->getLogger(MarketLogIdentifier::OTTO_MARKETPLACE)->logException($exception);
+//            $this->getLogger(MarketLogIdentifier::OTTO_MARKETPLACE)->logException($exception);
         }
 
         return null;
@@ -448,12 +448,12 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     public function updateCatalogData()
     {
 //        $this->activateTemplateInSystem();
-//        $template = $this->registerTemplate();
+        $template = $this->registerTemplate();
 //        $catalog = $this->create($template->getIdentifier())->toArray();
-        $catalog = $this->create('NumeTest4','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
+        $catalog = $this->create('NumeTest2','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
 
         /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
-        $catalogExportTypeContainer = app(CatalogExportTypeContainerContract::class);
+        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);
         $fieldGroupContainer = $catalogExportTypeContainer->getExportType('variation')->getFieldGroupContainer();
 
         $data = [];
@@ -544,7 +544,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     private function activateTemplateInSystem()
     {
         /** @var KeyValueStorageRepositoryContract $keyValueStorageRepository */
-        $keyValueStorageRepository = app(KeyValueStorageRepositoryContract::class);
+        $keyValueStorageRepository = pluginApp(KeyValueStorageRepositoryContract::class);
         $templates = $keyValueStorageRepository->loadValue('otto_market_category_groups', []);
 
         $newTemplate = 'ElasticExportBasicPriceSearchEngine';
