@@ -22,6 +22,7 @@ class ElasticExportBasicPriceSearchEngineServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->getApplication()->register(ElasticExportBasicPriceSearchEngineRouteServiceProvider::class);
         $this->getApplication()->register(CatalogBootServiceProvider::class);
     }
 
