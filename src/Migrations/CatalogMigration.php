@@ -16,7 +16,7 @@ class CatalogMigration
     {
         /** @var BasicPriceSearchEngine $variable */
         $variable = pluginApp(BasicPriceSearchEngine::class);
-//        $variable->updateCatalogData();
+        $variable->updateCatalogData();
     }
 
 }

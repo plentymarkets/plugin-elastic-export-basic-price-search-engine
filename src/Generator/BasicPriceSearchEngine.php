@@ -79,8 +79,11 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     public function __construct(
         ArrayHelper $arrayHelper,
-        PriceHelper $priceHelper)
+        PriceHelper $priceHelper,
+        TemplateContainerContract $templateContainer
+    )
     {
+        $this->templateContainer = $templateContainer;
         $this->arrayHelper = $arrayHelper;
         $this->priceHelper = $priceHelper;
     }
@@ -424,7 +427,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         $page = 1;
 
         $catalogRepo = pluginApp(CatalogRepositoryContract::class);
-//        $this->updateCatalogData();
+        $this->updateCatalogData();
         try {
             do {
                 $catalogList = $catalogRepo->all($page);
@@ -449,8 +452,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     {
 //        $this->activateTemplateInSystem();
         $template = $this->registerTemplate();
-//        $catalog = $this->create('NumeTest11',$template->getIdentifier())->toArray();
-        $catalog = $this->create('NumeTest12','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
+        $catalog = $this->create('NumeTest2',$template->getIdentifier())->toArray();
 
 //        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
 //        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);
@@ -468,10 +470,10 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                 'sources' => [
                     [
                         'fieldId' => utf8_encode($value['default']),
-                        'key' => $value['default'],
+                        'key' => $value['fieldKey'],
                         'lang' => 'de',
                         'type' => $value['type'],
-                        'id' => (string)''
+                        'id' => null
                     ]
                 ]
             ];
@@ -525,12 +527,12 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     private function registerTemplate()
     {
-        return $this->templateContainer->getTemplate();
-//        return $this->templateContainer->register(
-//            'ElasticExportBasicPriceSearchEngine',
-//            'exampleType',
-//            CatalogTemplateProvider::class
-//        );
+//        return $this->templateContainer->getTemplate();
+        return $this->templateContainer->register(
+            'ElasticExportBasicPriceSearchEngine',
+            'exampleType',
+            CatalogTemplateProvider::class
+        );
 
     }
 
