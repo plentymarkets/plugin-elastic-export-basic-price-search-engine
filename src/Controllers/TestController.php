@@ -18,8 +18,9 @@ class TestController extends Controller
     public function test( AuthHelper $authHelper )
     {
         $authHelper->processUnguarded( function() {
-            $variable = pluginApp(BasicPriceSearchEngine::class);
-            $variable->updateCatalogData();
+            /** @var BasicPriceSearchEngine $variable */
+            $variable = pluginApp( BasicPriceSearchEngine::class);
+            //$variable->updateCatalogData();
         } );
 
         return 'done';

@@ -12,7 +12,7 @@ class ElasticExportBasicPriceSearchEngineRouteServiceProvider extends RouteServi
     public function map( ApiRouter $api )
     {
         $api->version( [ 'v1' ], [
-            'namespace' => 'EbayNBA\Controllers'
+            'namespace' => 'ElasticExportBasicPriceSearchEngine\Controllers'
         ], function( $router ) {
             // Test Controller
             $router->get( 'basicprice/dev/test', 'TestController@test' );
