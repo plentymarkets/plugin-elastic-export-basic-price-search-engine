@@ -424,7 +424,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         $page = 1;
 
         $catalogRepo = pluginApp(CatalogRepositoryContract::class);
-        $this->updateCatalogData();
+//        $this->updateCatalogData();
         try {
             do {
                 $catalogList = $catalogRepo->all($page);
@@ -448,7 +448,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     public function updateCatalogData()
     {
 //        $this->activateTemplateInSystem();
-//        $template = $this->registerTemplate();
+        $template = $this->registerTemplate();
 //        $catalog = $this->create('NumeTest11',$template->getIdentifier())->toArray();
         $catalog = $this->create('NumeTest12','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
 
@@ -525,12 +525,12 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     private function registerTemplate()
     {
-
-        return $this->templateContainer->register(
-            'ElasticExportBasicPriceSearchEngine',
-            'exampleType',
-            CatalogTemplateProvider::class
-        );
+        return $this->templateContainer->getTemplate();
+//        return $this->templateContainer->register(
+//            'ElasticExportBasicPriceSearchEngine',
+//            'exampleType',
+//            CatalogTemplateProvider::class
+//        );
 
     }
 
