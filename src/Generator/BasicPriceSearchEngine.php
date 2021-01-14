@@ -452,15 +452,15 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 //        $catalog = $this->create($template->getIdentifier())->toArray();
         $catalog = $this->create('NumeTest2','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
 
-        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
-        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);
-        $fieldGroupContainer = $catalogExportTypeContainer->getExportType('variation')->getFieldGroupContainer();
+//        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
+//        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);
+//        $fieldGroupContainer = $catalogExportTypeContainer->getExportType('variation')->getFieldGroupContainer();
 
         $data = [];
         $values = pluginApp(BaseFieldsDataProvider::class)->get();
 
         foreach ($values as $value){
-            $field = mb_convert_encoding($this->getCatalogMappingData($value['default'], $fieldGroupContainer), 'UTF-8');;
+            //$field = mb_convert_encoding($this->getCatalogMappingData($value['default'], $fieldGroupContainer), 'UTF-8');;
 
             $dataProviderKey = utf8_encode($this->getDataProviderByIdentifier($value['key']));
             $data['mappings'][$dataProviderKey]['fields'][] = [
@@ -468,10 +468,10 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                 'sources' => [
                     [
                         'fieldId' => utf8_encode($value['default']),
-                        'key' => $field['key'],
+                        'key' => $value['default'],
                         'lang' => 'de',
-                        'type' => $field['type'],
-                        'id' => (string)$field['type']
+                        'type' => $value['type'],
+                        'id' => (string)''
                     ]
                 ]
             ];
@@ -498,7 +498,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         return 'general';
     }
 
-    private function getCatalogMappingData(string $fieldId, $fieldGroupContainer)
+    /*private function getCatalogMappingData(string $fieldId, $fieldGroupContainer)
     {
         $explodedId = explode('-', $fieldId);
         $groupId = $explodedId[0];
@@ -517,7 +517,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
 
         $field['fieldId'] = $newFieldId;
         return $field;
-    }
+    }*/
 
     /**
      *
@@ -541,19 +541,19 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         return $catalogRepository->create(['name' => $name, 'template' => $template]);
     }
 
-    private function activateTemplateInSystem()
-    {
-        /** @var KeyValueStorageRepositoryContract $keyValueStorageRepository */
-        $keyValueStorageRepository = pluginApp(KeyValueStorageRepositoryContract::class);
-        $templates = $keyValueStorageRepository->loadValue('otto_market_category_groups', []);
-
-        $newTemplate = 'ElasticExportBasicPriceSearchEngine';
-
-        if(strlen($newTemplate)) {
-            $templates[] = $newTemplate;
-            $keyValueStorageRepository->saveValue('otto_market_category_groups', array_unique($templates));
-        } else {
-            throw new \Exception('The selected category group "$newTemplate" is not valid.');
-        }
-    }
+//    private function activateTemplateInSystem()
+//    {
+//        /** @var KeyValueStorageRepositoryContract $keyValueStorageRepository */
+//        $keyValueStorageRepository = pluginApp(KeyValueStorageRepositoryContract::class);
+//        $templates = $keyValueStorageRepository->loadValue('otto_market_category_groups', []);
+//
+//        $newTemplate = 'ElasticExportBasicPriceSearchEngine';
+//
+//        if(strlen($newTemplate)) {
+//            $templates[] = $newTemplate;
+//            $keyValueStorageRepository->saveValue('otto_market_category_groups', array_unique($templates));
+//        } else {
+//            throw new \Exception('The selected category group "$newTemplate" is not valid.');
+//        }
+//    }
 }
