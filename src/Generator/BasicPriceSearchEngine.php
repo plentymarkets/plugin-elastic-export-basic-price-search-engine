@@ -448,9 +448,9 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     public function updateCatalogData()
     {
 //        $this->activateTemplateInSystem();
-        $template = $this->registerTemplate();
-//        $catalog = $this->create($template->getIdentifier())->toArray();
-        $catalog = $this->create('NumeTest2','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
+//        $template = $this->registerTemplate();
+//        $catalog = $this->create('NumeTest11',$template->getIdentifier())->toArray();
+        $catalog = $this->create('NumeTest12','de3ca5ba-41af-3ad0-9832-b101ad3fe9e5')->toArray();
 
 //        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
 //        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);

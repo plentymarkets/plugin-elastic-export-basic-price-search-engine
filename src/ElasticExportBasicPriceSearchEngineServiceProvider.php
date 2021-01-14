@@ -10,6 +10,7 @@ use Plenty\Plugin\ServiceProvider;
 
 /**
  * Class ElasticExportBasicPriceSearchEngineServiceProvider
+ *
  * @package ElasticExportBasicPriceSearchEngine
  */
 class ElasticExportBasicPriceSearchEngineServiceProvider extends ServiceProvider
@@ -22,7 +23,6 @@ class ElasticExportBasicPriceSearchEngineServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->getApplication()->register(ElasticExportBasicPriceSearchEngineRouteServiceProvider::class);
         $this->getApplication()->register(CatalogBootServiceProvider::class);
     }
 
