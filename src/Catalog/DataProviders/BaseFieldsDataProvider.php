@@ -22,7 +22,7 @@ class BaseFieldsDataProvider
 //                'label' => 'Name',
 //                'default' => 'item-id',
 //                'type' => 'string',
-//            	'isMapping' => false,
+//            	'isMapping1' => false,
 //            ],
             [
                 'key' => 'name.de',
@@ -32,6 +32,7 @@ class BaseFieldsDataProvider
                 'type' => 'variation',
                 'fieldKey' => 'name',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'article_id',
@@ -41,6 +42,7 @@ class BaseFieldsDataProvider
                 'type' => 'item',
                 'fieldKey' => 'id',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'deeplink',
@@ -50,6 +52,8 @@ class BaseFieldsDataProvider
                 'type' => 'text',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'short_description',
@@ -59,6 +63,7 @@ class BaseFieldsDataProvider
                 'type' => 'text',
                 'fieldKey' => 'shortDescription',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'description',
@@ -68,15 +73,17 @@ class BaseFieldsDataProvider
                 'type' => 'text',
                 'fieldKey' => 'description',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'article',
                 'label' => 'Article No',
                 'required' => false,
                 'default' => 'variation-number',
-                'type' => 'number',
+                'type' => 'variation',
                 'fieldKey' => 'number',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'producer',
@@ -86,6 +93,7 @@ class BaseFieldsDataProvider
                 'type' => 'item',
                 'fieldKey' => 'manufacturer.id',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'model',
@@ -95,6 +103,7 @@ class BaseFieldsDataProvider
                 'type' => 'variation',
                 'fieldKey' => 'model',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'availability',
@@ -104,6 +113,7 @@ class BaseFieldsDataProvider
                 'type' => 'variation',
                 'fieldKey' => 'availability',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'ean',
@@ -113,6 +123,7 @@ class BaseFieldsDataProvider
                 'type' => 'barcode-code',
                 'fieldKey' => 'code',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'isbn',
@@ -122,33 +133,38 @@ class BaseFieldsDataProvider
                 'type' => 'barcode-code',
                 'fieldKey' => 'code',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'unit',
                 'label' => 'Unit',
                 'required' => false,
-                'default' => 'item-id',
-                'type' => 'string',
+                'default' => '',
+                'type' => 'unit',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'price',
                 'label' => 'Price',
                 'required' => false,
                 'default' => 'salesPrice-1',
-                'type' => 'price',
+                'type' => 'sales-price',
                 'fieldKey' => 'price',
                 'isMapping' => false,
+                'id' => 1
             ],
             [
                 'key' => 'price_old',
                 'label' => 'Price old',
                 'required' => false,
-                'default' => 'item-id',
-                'type' => 'string',
-                'fieldKey' => '',
+                'default' => 'salesPrice-2',
+                'type' => 'sales-price',
+                'fieldKey' => 'price',
                 'isMapping' => false,
+                'id' => 2
             ],
             [
                 'key' => 'weight',
@@ -158,6 +174,7 @@ class BaseFieldsDataProvider
                 'type' => 'variation',
                 'fieldKey' => 'weightNetG',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'category1',
@@ -167,114 +184,139 @@ class BaseFieldsDataProvider
                 'type' => 'default-category',
                 'fieldKey' => 'categoryId',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'category2',
                 'label' => 'Category2',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'default-category',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'category3',
                 'label' => 'Category3',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'default-category',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'category4',
                 'label' => 'Category4',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'default-category',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'category5',
                 'label' => 'Category5',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'default-category',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'category6',
                 'label' => 'Category6',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'default-category',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'category_concat',
                 'label' => 'Category Concat',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'default-category',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null
             ],
             [
                 'key' => 'image_url_preview',
                 'label' => 'Image Url Preview',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'images',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'image_url',
                 'label' => 'Image Url',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'images',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'shipment_and_handling',
                 'label' => 'Shipment & Handling',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'is-shipped-by',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'unit_price',
                 'label' => 'Unit Price',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'unit',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'unit_price_value',
                 'label' => 'Unit Price Value',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'unit',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'unit_price_lot',
                 'label' => 'Unit Price Lot',
                 'required' => false,
                 'default' => '',
-                'type' => 'string',
+                'type' => 'unit',
                 'fieldKey' => '',
                 'isMapping' => false,
+                'id' => null,
+                'hidden' => true
             ],
             [
                 'key' => 'variation_id',
@@ -284,6 +326,7 @@ class BaseFieldsDataProvider
                 'type' => 'variation',
                 'fieldKey' => 'id',
                 'isMapping' => false,
+                'id' => null
             ]
         ];
     }

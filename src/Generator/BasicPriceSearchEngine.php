@@ -452,7 +452,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     {
 //        $this->activateTemplateInSystem();
         $template = $this->registerTemplate();
-        $catalog = $this->create('NumeTest2',$template->getIdentifier())->toArray();
+        $catalog = $this->create('FUTest1',$template->getIdentifier())->toArray();
 
 //        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
 //        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);
@@ -473,7 +473,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
                         'key' => $value['fieldKey'],
                         'lang' => 'de',
                         'type' => $value['type'],
-                        'id' => null
+                        'id' => $value['id']
                     ]
                 ]
             ];
