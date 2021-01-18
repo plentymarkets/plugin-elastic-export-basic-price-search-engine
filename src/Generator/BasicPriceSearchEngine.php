@@ -524,6 +524,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     /**
      *
      * @return TemplateContract
+     *
      */
     private function registerTemplate()
     {
