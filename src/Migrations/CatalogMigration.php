@@ -8,6 +8,7 @@ use Plenty\Modules\Catalog\Contracts\CatalogContentRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContract;
+use Plenty\Modules\DataExchange\Contracts\ExportRepositoryContract;
 
 /**
  * Class CatalogMigration
@@ -35,6 +36,10 @@ class CatalogMigration
      */
     public function updateCatalogData()
     {
+
+        $exportRepository = pluginApp(ExportRepositoryContract::class);
+        $format = $exportRepository->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
+
         $template = $this->registerTemplate();
         $catalog = $this->create('Test10',$template->getIdentifier())->toArray();
 

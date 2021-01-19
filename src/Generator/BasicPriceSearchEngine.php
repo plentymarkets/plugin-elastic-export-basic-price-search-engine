@@ -13,6 +13,7 @@ use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContract;
 use Plenty\Modules\DataExchange\Contracts\CSVPluginGenerator;
+use Plenty\Modules\DataExchange\Contracts\ExportRepositoryContract;
 use Plenty\Modules\Helper\Contracts\KeyValueStorageRepositoryContract;
 use Plenty\Modules\Helper\Services\ArrayHelper;
 use Plenty\Modules\DataExchange\Models\FormatSetting;
@@ -425,7 +426,8 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     public function getCatalog(string $catalogName, string $templateIdentifier)
     {
         $page = 1;
-
+        $testValue = pluginApp(ExportRepositoryContract::class);
+        $test = $testValue->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
         $catalogRepo = pluginApp(CatalogRepositoryContract::class);
         $this->updateCatalogData();
         try {
