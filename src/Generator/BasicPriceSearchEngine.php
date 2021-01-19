@@ -425,11 +425,16 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     public function getCatalog(string $catalogName, string $templateIdentifier)
     {
+//        $test->getResult()[0]->name
         $page = 1;
         $testValue = pluginApp(ExportRepositoryContract::class);
-        $test = $testValue->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
+        $tests = $testValue->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
+        foreach($tests->getResult() as $test)
+        {
+            $this->updateCatalogData($test->name);
+        }
         $catalogRepo = pluginApp(CatalogRepositoryContract::class);
-        $this->updateCatalogData();
+
         try {
             do {
                 $catalogList = $catalogRepo->all($page);
@@ -450,11 +455,11 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
     }
 
 
-    public function updateCatalogData()
+    public function updateCatalogData($name)
     {
 //        $this->activateTemplateInSystem();
         $template = $this->registerTemplate();
-        $catalog = $this->create('FUTest1',$template->getIdentifier())->toArray();
+        $catalog = $this->create($name,$template->getIdentifier())->toArray();
 
 //        /** @var CatalogExportTypeContainerContract $catalogExportTypeContainer */
 //        $catalogExportTypeContainer = pluginApp(CatalogExportTypeContainerContract::class);
@@ -530,10 +535,10 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     private function registerTemplate()
     {
-//        return $this->templateContainer->getTemplate();
+
         return $this->templateContainer->register(
+            'BasicPriceSearchEngine',
             'ElasticExportBasicPriceSearchEngine',
-            'exampleType',
             CatalogTemplateProvider::class
         );
 

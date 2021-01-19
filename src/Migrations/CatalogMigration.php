@@ -28,20 +28,22 @@ class CatalogMigration
 
     public function run()
     {
-        $this->updateCatalogData();
+        $exportRepository = pluginApp(ExportRepositoryContract::class);
+        $formats = $exportRepository->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
+        foreach($formats->getResult() as $format)
+        {
+            $this->updateCatalogData($format->name);
+        }
     }
 
     /**
      * @return bool
      */
-    public function updateCatalogData()
+    public function updateCatalogData($name)
     {
 
-        $exportRepository = pluginApp(ExportRepositoryContract::class);
-        $format = $exportRepository->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
-
         $template = $this->registerTemplate();
-        $catalog = $this->create('Test10',$template->getIdentifier())->toArray();
+        $catalog = $this->create($name,$template->getIdentifier())->toArray();
 
         $data = [];
         $values = pluginApp(BaseFieldsDataProvider::class)->get();
@@ -92,8 +94,8 @@ class CatalogMigration
     private function registerTemplate()
     {
         return $this->templateContainer->register(
+            'BasicPriceSearchEngine',
             'ElasticExportBasicPriceSearchEngine',
-            'exampleType',
             CatalogTemplateProvider::class
         );
     }
