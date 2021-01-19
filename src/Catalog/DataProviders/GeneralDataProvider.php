@@ -29,7 +29,8 @@ class GeneralDataProvider extends BaseDataProvider
             [
                 'key' => 'deeplink',
                 'label' => 'Deeplink',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'short_description',
@@ -94,32 +95,38 @@ class GeneralDataProvider extends BaseDataProvider
             [
                 'key' => 'category1',
                 'label' => 'Category1',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'category2',
                 'label' => 'Category2',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'category3',
                 'label' => 'Category3',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'category4',
                 'label' => 'Category4',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'category5',
                 'label' => 'Category5',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'category6',
                 'label' => 'Category6',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'category_concat',
@@ -144,17 +151,20 @@ class GeneralDataProvider extends BaseDataProvider
             [
                 'key' => 'unit_price',
                 'label' => 'Unit Price',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'unit_price_value',
                 'label' => 'Unit Price Value',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'unit_price_lot',
                 'label' => 'Unit Price Lot',
-                'required' => false
+                'required' => false,
+                'hidden' => true
             ],
             [
                 'key' => 'variation_id',

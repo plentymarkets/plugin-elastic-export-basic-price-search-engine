@@ -15,15 +15,6 @@ class BaseFieldsDataProvider
     public function get():array
     {
         return [
-//            [
-//                'key' => 'name.de',
-//                'simplifiedKey' => 'name.de',
-//                'required' => true,
-//                'label' => 'Name',
-//                'default' => 'item-id',
-//                'type' => 'string',
-//            	'isMapping1' => false,
-//            ],
             [
                 'key' => 'name.de',
                 'label' => 'Name',
@@ -44,17 +35,16 @@ class BaseFieldsDataProvider
                 'isMapping' => false,
                 'id' => null
             ],
-            [
-                'key' => 'deeplink',
-                'label' => 'Deeplink',
-                'required' => false,
-                'default' => '',
-                'type' => 'text',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
+//            [
+//                'key' => 'deeplink',
+//                'label' => 'Deeplink',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'text',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
             [
                 'key' => 'short_description',
                 'label' => 'Short description',
@@ -139,12 +129,11 @@ class BaseFieldsDataProvider
                 'key' => 'unit',
                 'label' => 'Unit',
                 'required' => false,
-                'default' => '',
+                'default' => 'variation-unit',
                 'type' => 'unit',
-                'fieldKey' => '',
+                'fieldKey' => 'unitOfMeasurement',
                 'isMapping' => false,
                 'id' => null,
-                'hidden' => true
             ],
             [
                 'key' => 'price',
@@ -176,72 +165,66 @@ class BaseFieldsDataProvider
                 'isMapping' => false,
                 'id' => null
             ],
-            [
-                'key' => 'category1',
-                'label' => 'Category1',
-                'required' => false,
-                'default' => 'defaultCategory-id',
-                'type' => 'default-category',
-                'fieldKey' => 'categoryId',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'category2',
-                'label' => 'Category2',
-                'required' => false,
-                'default' => '',
-                'type' => 'default-category',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'category3',
-                'label' => 'Category3',
-                'required' => false,
-                'default' => '',
-                'type' => 'default-category',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'category4',
-                'label' => 'Category4',
-                'required' => false,
-                'default' => '',
-                'type' => 'default-category',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'category5',
-                'label' => 'Category5',
-                'required' => false,
-                'default' => '',
-                'type' => 'default-category',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'category6',
-                'label' => 'Category6',
-                'required' => false,
-                'default' => '',
-                'type' => 'default-category',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
+//            [
+//                'key' => 'category1',
+//                'label' => 'Category1',
+//                'required' => false,
+//                'default' => 'defaultCategory-id',
+//                'type' => 'default-category',
+//                'fieldKey' => 'categoryId',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'category2',
+//                'label' => 'Category2',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'default-category',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'category3',
+//                'label' => 'Category3',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'default-category',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'category4',
+//                'label' => 'Category4',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'default-category',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'category5',
+//                'label' => 'Category5',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'default-category',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'category6',
+//                'label' => 'Category6',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'default-category',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
             [
                 'key' => 'category_concat',
                 'label' => 'Category Concat',
@@ -260,8 +243,7 @@ class BaseFieldsDataProvider
                 'type' => 'images',
                 'fieldKey' => '',
                 'isMapping' => false,
-                'id' => null,
-                'hidden' => true
+                'id' => null
             ],
             [
                 'key' => 'image_url',
@@ -271,8 +253,7 @@ class BaseFieldsDataProvider
                 'type' => 'images',
                 'fieldKey' => '',
                 'isMapping' => false,
-                'id' => null,
-                'hidden' => true
+                'id' => null
             ],
             [
                 'key' => 'shipment_and_handling',
@@ -282,42 +263,38 @@ class BaseFieldsDataProvider
                 'type' => 'is-shipped-by',
                 'fieldKey' => '',
                 'isMapping' => false,
-                'id' => null,
-                'hidden' => true
+                'id' => null
             ],
-            [
-                'key' => 'unit_price',
-                'label' => 'Unit Price',
-                'required' => false,
-                'default' => '',
-                'type' => 'unit',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'unit_price_value',
-                'label' => 'Unit Price Value',
-                'required' => false,
-                'default' => '',
-                'type' => 'unit',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
-            [
-                'key' => 'unit_price_lot',
-                'label' => 'Unit Price Lot',
-                'required' => false,
-                'default' => '',
-                'type' => 'unit',
-                'fieldKey' => '',
-                'isMapping' => false,
-                'id' => null,
-                'hidden' => true
-            ],
+//            [
+//                'key' => 'unit_price',
+//                'label' => 'Unit Price',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'unit',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'unit_price_value',
+//                'label' => 'Unit Price Value',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'unit',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
+//            [
+//                'key' => 'unit_price_lot',
+//                'label' => 'Unit Price Lot',
+//                'required' => false,
+//                'default' => '',
+//                'type' => 'unit',
+//                'fieldKey' => '',
+//                'isMapping' => false,
+//                'id' => null
+//            ],
             [
                 'key' => 'variation_id',
                 'label' => 'Variation Id',

@@ -425,7 +425,6 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
      */
     public function getCatalog(string $catalogName, string $templateIdentifier)
     {
-//        $test->getResult()[0]->name
         $page = 1;
         $testValue = pluginApp(ExportRepositoryContract::class);
         $tests = $testValue->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
@@ -468,7 +467,7 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         $data = [];
         $values = pluginApp(BaseFieldsDataProvider::class)->get();
 
-        foreach ($values as $value){
+        foreach ($values as $value) {
             //$field = mb_convert_encoding($this->getCatalogMappingData($value['default'], $fieldGroupContainer), 'UTF-8');;
 
             $dataProviderKey = utf8_encode($this->getDataProviderByIdentifier($value['key']));
