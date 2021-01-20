@@ -4,6 +4,7 @@ namespace ElasticExportBasicPriceSearchEngine\Migrations;
 
 use ElasticExportBasicPriceSearchEngine\Catalog\DataProviders\BaseFieldsDataProvider;
 use ElasticExportBasicPriceSearchEngine\Catalog\Providers\CatalogTemplateProvider;
+use Plenty\Exceptions\ValidationException;
 use Plenty\Modules\Catalog\Contracts\CatalogContentRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\CatalogRepositoryContract;
 use Plenty\Modules\Catalog\Contracts\TemplateContainerContract;
@@ -21,34 +22,64 @@ class CatalogMigration
     /** @var TemplateContainerContract */
     private $templateContainer;
 
-    public function __construct(TemplateContainerContract $templateContainer)
+    /** @var ExportRepositoryContract */
+    private $exportRepository;
+
+    /** @var CatalogContentRepositoryContract */
+    private $catalogContentRepository;
+
+    /** @var CatalogRepositoryContract */
+    private $catalogRepositoryContract;
+
+    public function __construct(
+        TemplateContainerContract $templateContainer,
+        ExportRepositoryContract $exportRepository,
+        CatalogContentRepositoryContract $catalogContentRepository,
+        CatalogRepositoryContract $catalogRepositoryContract
+    )
     {
         $this->templateContainer = $templateContainer;
+        $this->exportRepository = $exportRepository;
+        $this->catalogContentRepository = $catalogContentRepository;
+        $this->catalogRepositoryContract = $catalogRepositoryContract;
     }
 
     public function run()
     {
-        $exportRepository = pluginApp(ExportRepositoryContract::class);
-        $formats = $exportRepository->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
-        foreach($formats->getResult() as $format)
+        $elasticExportFormats = $this->exportRepository->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
+
+        foreach($elasticExportFormats->getResult() as $format)
         {
             $this->updateCatalogData($format->name);
         }
     }
 
     /**
+     * @param $name
+     *
      * @return bool
+     * @throws \Exception
      */
     public function updateCatalogData($name)
     {
-
+        // register the template
         $template = $this->registerTemplate();
-        $catalog = $this->create($name,$template->getIdentifier())->toArray();
+
+        // create a new catalog
+        //$catalog = $this->create($name, $template->getIdentifier())->toArray();
+        try
+        {
+            $catalog = $this->catalogRepositoryContract->create(
+                ['name' => $name, 'template' => $template->getIdentifier()]
+            )->toArray();
+        }
+        catch(ValidationException $e)
+        {
+        }
 
         $data = [];
         $values = pluginApp(BaseFieldsDataProvider::class)->get();
-
-        foreach ($values as $value){
+        foreach($values as $value) {
             $dataProviderKey = utf8_encode($this->getDataProviderByIdentifier($value['key']));
             $data['mappings'][$dataProviderKey]['fields'][] = [
                 'key' => utf8_encode($value['key']),
@@ -64,9 +95,14 @@ class CatalogMigration
             ];
         }
 
-        // save catalog
-        $catalogContentRepository = pluginApp(CatalogContentRepositoryContract::class);
-        $catalogContentRepository->update($catalog['id'], $data);
+        // update created catalog data
+        try
+        {
+            $this->catalogContentRepository->update($catalog['id'], $data);
+        }
+        catch(\Exception $e)
+        {
+        }
 
         return true;
     }
@@ -103,12 +139,12 @@ class CatalogMigration
     /**
      * @param $name
      * @param $template
+     *
      * @return mixed
+     * @throws ValidationException
      */
     public function create($name ,$template)
     {
-        $catalogRepository = pluginApp(CatalogRepositoryContract::class);
-
-        return $catalogRepository->create(['name' => $name, 'template' => $template]);
+        return $this->catalogRepositoryContract->create(['name' => $name, 'template' => $template]);
     }
 }
