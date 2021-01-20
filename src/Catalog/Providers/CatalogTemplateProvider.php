@@ -58,7 +58,13 @@ class CatalogTemplateProvider extends BaseTemplateProvider
      */
     public function getPostMutators(): array
     {
-        return [];
+        return [
+            function($variation) {
+                $variation['deeplink'] = 'https://google.com/';
+
+                return $variation;
+            }
+        ];
     }
 
     /**
