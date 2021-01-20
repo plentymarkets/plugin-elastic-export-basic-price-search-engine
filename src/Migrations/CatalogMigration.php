@@ -66,16 +66,7 @@ class CatalogMigration
         $template = $this->registerTemplate();
 
         // create a new catalog
-        //$catalog = $this->create($name, $template->getIdentifier())->toArray();
-        try
-        {
-            $catalog = $this->catalogRepositoryContract->create(
-                ['name' => $name, 'template' => $template->getIdentifier()]
-            )->toArray();
-        }
-        catch(ValidationException $e)
-        {
-        }
+        $catalog = $this->create( $name, $template->getIdentifier())->toArray();
 
         $data = [];
         $values = pluginApp(BaseFieldsDataProvider::class)->get();
@@ -138,13 +129,13 @@ class CatalogMigration
 
     /**
      * @param $name
-     * @param $template
+     * @param $templateIdentifier
      *
      * @return mixed
      * @throws ValidationException
      */
-    public function create($name ,$template)
+    public function create($name ,$templateIdentifier)
     {
-        return $this->catalogRepositoryContract->create(['name' => $name, 'template' => $template]);
+        return $this->catalogRepositoryContract->create(['name' => $name, 'template' => $templateIdentifier]);
     }
 }
