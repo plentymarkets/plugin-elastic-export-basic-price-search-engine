@@ -428,10 +428,10 @@ class BasicPriceSearchEngine extends CSVPluginGenerator
         $page = 1;
         $testValue = pluginApp(ExportRepositoryContract::class);
         $tests = $testValue->search(['formatKey' => 'BasicPriceSearchEngine-Plugin']);
-        foreach($tests->getResult() as $test)
-        {
-            $this->updateCatalogData($test->name);
-        }
+//        foreach($tests->getResult() as $test)
+//        {
+//            $this->updateCatalogData($test->name);
+//        }
         $catalogRepo = pluginApp(CatalogRepositoryContract::class);
 
         try {
