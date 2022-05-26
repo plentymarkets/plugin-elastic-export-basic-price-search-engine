@@ -1,5 +1,10 @@
 # Release Notes für Elastic Export Basic Price Search Engine
 
+## v1.1.5 (2022-05-26)
+
+### Geändert
+- UPDATE - Zusätzliche Updates für Kompatibilität mit PHP 8.
+
 ## v1.1.4 (2018-04-30)
 
 ### Geändert
