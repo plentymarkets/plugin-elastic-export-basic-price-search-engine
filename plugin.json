@@ -18,5 +18,8 @@
   "require": {
     "ElasticExport": ">= 1.6.6"
   },
-  "marketplaceName": "Basic Price Search Engine"
+  "marketplaceName": {
+    "de": "Basic Price Search Engine",
+    "en": "Basic Price Search Engine"
+  }
 }
