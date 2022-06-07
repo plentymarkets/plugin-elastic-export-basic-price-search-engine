@@ -7,7 +7,7 @@ Artikeldaten können jetzt per Katalogexport an Basic Price Search Engine übert
  
 Dieses Plugin verwendet den Elastischen Export. Deshalb benötigst du zusätzlich zu diesem Plugin außerdem das Plugin **Elastischer Export**. Beachte aber, dass der Elastische Export und die Exportformate nicht mehr weiterentwickelt werden. Wir empfehlen dir deshalb, für den Artikeldatenexport Kataloge zu erstellen.
  
-Beide Möglichkeiten, Awin in plentymarkets einzurichten, <a href="https://knowledge.plentymarkets.com/de-de/manual/main/maerkte/basic-price-search-engine.html" target="_blank">sind im plentymarkets Handbuch beschrieben</a>.
+Beide Möglichkeiten, Basic Price Search Engine in plentymarkets einzurichten, <a href="https://knowledge.plentymarkets.com/de-de/manual/main/maerkte/basic-price-search-engine.html" target="_blank">sind im plentymarkets Handbuch beschrieben</a>.
 </div>
 
 ## Lizenz
